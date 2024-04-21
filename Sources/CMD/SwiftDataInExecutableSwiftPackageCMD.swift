@@ -8,17 +8,10 @@ import ArgumentParser
 import Foundation
 import SwiftData
 
-@Model
-public final class Item {
-    public var timestamp: Date
-    
-    public init(timestamp: Date) {
-        self.timestamp = timestamp
-    }
-}
+import Shared
 
 @main
-struct SwiftDataInExecutableSwiftPackage: ParsableCommand {
+struct SwiftDataInExecutableSwiftPackageCMD: ParsableCommand {
     @MainActor mutating func run() throws {
         guard let bundleId = Bundle.main.bundleIdentifier else {
             fatalError("Bundle.main.bundleIdentifier not set")

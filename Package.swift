@@ -7,8 +7,8 @@ let package = Package(
     name: "SwiftDataInExecutableSwiftPackage",
     platforms: [.macOS(.v14)],
     products: [
-        .executable(name: "SwiftDataInExecutableSwiftPackage",
-                    targets: ["SwiftDataInExecutableSwiftPackage"])],
+        .executable(name: "SwiftDataInExecutableSwiftPackageCMD",
+                    targets: ["CMD"])],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.0"),
     ],
@@ -16,9 +16,10 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .executableTarget(
-            name: "SwiftDataInExecutableSwiftPackage",
+            name: "CMD",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "Shared")
             ],
             linkerSettings: [
                 .unsafeFlags( ["-Xlinker", "-sectcreate",
@@ -26,6 +27,7 @@ let package = Package(
                                "-Xlinker", "__info_plist",
                                "-Xlinker", "Resources/Info.plist"] )
             ]
-        )
+        ),
+        .target(name: "Shared")
     ]
 )
