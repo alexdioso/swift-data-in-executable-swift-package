@@ -13,28 +13,7 @@ import Shared
 @main
 struct SwiftDataInExecutableSwiftPackageCMD: ParsableCommand {
     @MainActor mutating func run() throws {
-        guard let bundleId = Bundle.main.bundleIdentifier else {
-            fatalError("Bundle.main.bundleIdentifier not set")
-        }
-        print("Bundle.main.bundleIdentifier: \(bundleId)")
-        
-        print("Creating Model Configuration")
-        let schema = Schema([
-            Item.self,
-        ])
-        
-        let fileManager = FileManager.default
-        let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let directoryURL = appSupportURL.appendingPathComponent(bundleId)
-        try fileManager.createDirectory (at: directoryURL, withIntermediateDirectories: true, attributes: nil)
-        
-        let fileURL = directoryURL.appendingPathComponent("\(bundleId).store")
-        let modelConfiguration = ModelConfiguration(schema: schema, url: fileURL)
-        print("\(modelConfiguration.url)")
-
-        print("Creating Model Container")
-        let modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
-        let modelContext = modelContainer.mainContext
+        let modelContext = ModelContainer.sharedModelContainer.mainContext
         
         print("")
         try listItems(from: modelContext)
